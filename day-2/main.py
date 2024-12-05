@@ -61,7 +61,7 @@ def part_one():
         print("Total number of safe reports: ", safe)
 
 
-def part_one():
+def part_two():
     with open("input.txt", "r") as file:
         data = file.read().splitlines()
         data = [line.spl it() for line in data]
