@@ -60,7 +60,7 @@ only obey the most RECENT do or don't instruction.
 """
 
 
-def part_two():
+def part_two_correct():
     with open("input.txt", "r") as f:
         data = f.read().strip()
     data = data.replace("don't()", "\n❌")
@@ -73,6 +73,7 @@ def part_two():
 
     for d in data:
         if d[0] == "❌":
+            print("don't")
             mul_enabled = False
         elif d[0] == "✅":
             mul_enabled = True
@@ -85,5 +86,36 @@ def part_two():
     print(s)
 
 
+"""
+This is now correct. The reason this was undercounting was because the input.txt file had newlines, so not all beginning of every line had a marker. so we weren't accounting for continuity (previous marker of do and don't) in thsoe cases.
+"""
+
+
+def part_two_incorrect():
+    with open("input.txt", "r") as f:
+        data = f.read().strip()
+        # remove newlines
+        data = data.replace("\n", "")
+    data = data.replace("don't()", "\n❌")
+    data = data.replace("do()", "\n✅")
+    data = "✅" + data  # Start with mul enabled
+    data = data.split("\n")
+
+    s = 0
+
+    for d in data:
+        print(d)
+        if d[0] == "❌":
+            print("don't")
+        elif d[0] == "✅":
+            results = re.findall(r"mul\((\d{1,3}),(\d{1,3})\)", d)
+            for r in results:
+                x, y = map(int, r)
+                s += x * y
+        else:
+            print("⚠️ NO MARKER")
+    print(s)
+
+
 if __name__ == "__main__":
-    part_two()
+    part_two_incorrect()
